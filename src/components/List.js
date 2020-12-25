@@ -1,11 +1,14 @@
 import React from "react";
 import Budget from "./Budget";
 
-export default function List() {
+export default function List({ data, handleDelete }) {
   return (
     <div>
-      Hello from Budget List
-      <Budget />
+      <ul>
+        {data.map((ele) => (
+          <Budget handleDelete={handleDelete} key={ele.id} ele={ele} />
+        ))}
+      </ul>
     </div>
   );
 }

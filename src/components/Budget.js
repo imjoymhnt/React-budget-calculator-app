@@ -1,7 +1,7 @@
 import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-export default function Budget({ ele, handleDelete }) {
+export default function Budget({ ele, handleDelete, handleEdit }) {
   return (
     <div>
       <li>
@@ -10,7 +10,10 @@ export default function Budget({ ele, handleDelete }) {
           <h4>{ele.price}</h4>
         </div>
         <div>
-          <button className="btn btn-primary m-1">
+          <button
+            onClick={() => handleEdit(ele.id)}
+            className="btn btn-primary m-1"
+          >
             <FaEdit />
           </button>
           <button

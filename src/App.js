@@ -27,6 +27,8 @@ function App() {
   const [data, setData] = useState(expenses);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
+  const [id, setId] = useState(0);
+  const [edit, setEdit] = useState(false);
 
   const handleTitle = (e) => {
     setTitle(e.target.value);
@@ -37,8 +39,16 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (title !== "" && price > 0) {
-      const singleData = { id: uuid(), title, price };
-      setData([...expenses, singleData]);
+      if (edit) {
+        let tempData = data.map((item) => {
+          return item.id === id ? { ...item, title, price } : item;
+        });
+        setData(tempData);
+        setEdit(false);
+      } else {
+        const singleData = { id: uuid(), title, price };
+        setData([...expenses, singleData]);
+      }
     }
     setTitle("");
     setPrice("");
@@ -51,6 +61,13 @@ function App() {
     setData(tempExpenses);
     console.log(tempExpenses);
   };
+  const handleEdit = (id) => {
+    const editData = data.find((item) => item.id === id);
+    setTitle(editData.title);
+    setPrice(editData.price);
+    setEdit(true);
+    setId(id);
+  };
   return (
     <div className="App text-center">
       <h1>Budget Calculator</h1>
@@ -61,7 +78,7 @@ function App() {
         title={title}
         price={price}
       />
-      <List data={data} handleDelete={handleDelete} />
+      <List data={data} handleEdit={handleEdit} handleDelete={handleDelete} />
       {data.length > 0 ? (
         <button onClick={clearList} className="btn btn-danger">
           Clear List
